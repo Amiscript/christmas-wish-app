@@ -55,7 +55,7 @@ export function PostCard({ post, onClick, onLikeChange }: PostCardProps) {
       onLikeChange?.();
     } catch (error) {
       console.error('Error toggling like:', error);
-      toast.error('Failed to update like');
+      toast.success('Thank you smile💕');
     } finally {
       setIsLiking(false);
     }

@@ -70,10 +70,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 rounded-full text-sm font-medium text-secondary-foreground mb-4">
               <Sparkles className="w-4 h-4" />
-              Built with love by Edison Sime 
-              <Heart className="w-4 h-4 text-destructive fill-current" />
-              From Christmas  Cheer to New Year Hope
-            
+             I Love You and There is Nothing You Can Do About It❤️!Edison sime
             </div>
 
             <h1 className="text-5xl md:text-7xl font-serif font-bold text-primary leading-tight">
@@ -113,10 +110,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-4">
-              Featured Moments
+              Memories  under the lights
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover the warmth and joy shared by our community
+              Little moments, big Christmas feeling.
             </p>
           </div>
 

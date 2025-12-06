@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,14 @@ export function PostLightbox({ post, open, onOpenChange, onUpdate }: PostLightbo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (post) {
@@ -132,15 +141,17 @@ export function PostLightbox({ post, open, onOpenChange, onUpdate }: PostLightbo
   const handleShare = () => {
     if (!post) return;
 
+    const shareText = `${post.title}\n${post.caption}\n\nView this post and more on our website!`;
+
     if (navigator.share) {
       navigator.share({
         title: post.title,
-        text: post.caption,
-        url: window.location.origin + '/posts/' + post.id,
+        text: shareText,
+        url: window.location.origin, // Redirects to home page
       });
     } else {
-      navigator.clipboard.writeText(window.location.origin + '/posts/' + post.id);
-      toast.success('Link copied to clipboard!');
+      navigator.clipboard.writeText(window.location.origin); // Copy home page URL
+      toast.success('Home page link copied to clipboard!');
     }
   };
 
@@ -157,17 +168,21 @@ export function PostLightbox({ post, open, onOpenChange, onUpdate }: PostLightbo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl max-h-[90vh] p-0 overflow-hidden">
-        <div className="grid md:grid-cols-2 h-full">
+      <DialogContent className="max-w-5xl p-0 md:rounded-lg">
+        {/* Desktop Layout */}
+        <div className="hidden md:grid md:grid-cols-2 h-[90vh]">
           <div className="relative bg-midnight-blue flex items-center justify-center">
-            <img
+            <Image
               src={post.image_url}
               alt={post.alt_text}
-              className="w-full h-full object-contain"
+              width={800}
+              height={600}
+              className="w-full h-full object-contain p-4"
+              priority
             />
           </div>
 
-          <div className="flex flex-col h-full max-h-[90vh]">
+          <div className="flex flex-col h-full">
             <div className="p-6 border-b">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -186,7 +201,7 @@ export function PostLightbox({ post, open, onOpenChange, onUpdate }: PostLightbo
 
               <div className="mt-4 p-4 bg-accent/10 rounded-lg border-l-4 border-accent">
                 <p className="text-lg italic text-accent-foreground font-serif">
-                  "{post.caption}"
+                  {post.caption}
                 </p>
               </div>
 
@@ -253,6 +268,148 @@ export function PostLightbox({ post, open, onOpenChange, onUpdate }: PostLightbo
                     required
                   />
                   <Button type="submit" disabled={isSubmitting} size="icon">
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Mobile Layout - Full Screen Scrollable */}
+        <div className="md:hidden h-screen w-screen bg-background overflow-y-auto">
+          {/* Fixed Header */}
+          <div className="sticky top-0 z-10 bg-background border-b px-4 py-3 flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onOpenChange(false)}
+              className="h-10 w-10"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+            <h2 className="font-semibold text-lg truncate max-w-[70%]">{post.title}</h2>
+            <div className="w-10"></div> {/* Spacer for balance */}
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="px-4 pb-24">
+            {/* Image */}
+            <div className="relative bg-midnight-blue rounded-lg my-4 flex items-center justify-center min-h-[300px]">
+              <Image
+                src={post.image_url}
+                alt={post.alt_text}
+                width={800}
+                height={600}
+                className="w-full h-full object-contain p-4"
+                priority
+              />
+            </div>
+
+            {/* Post Info */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm text-muted-foreground">
+                  by {post.author_name}
+                </p>
+                <span className="text-xs text-muted-foreground">
+                  {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+                </span>
+              </div>
+
+              <p className="text-card-foreground leading-relaxed mb-4">
+                {post.write_up}
+              </p>
+
+              <div className="p-4 bg-accent/10 rounded-lg border-l-4 border-accent mb-4">
+                <p className="text-lg italic text-accent-foreground font-serif">
+                  {post.caption}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 py-3 border-y">
+                <Button
+                  variant={isLiked ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={handleLike}
+                  className="gap-2 flex-1"
+                >
+                  <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+                  {likesCount}
+                </Button>
+
+                <div className="flex items-center gap-2 text-muted-foreground px-3">
+                  <MessageCircle className="w-4 h-4" />
+                  <span className="text-sm">{comments.length}</span>
+                </div>
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleShare}
+                  className="gap-2 flex-1"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </Button>
+              </div>
+            </div>
+
+            {/* Comments Section */}
+            <div className="mb-8">
+              <h3 className="font-semibold text-lg mb-4">Comments</h3>
+
+              {comments.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageCircle className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">
+                    No comments yet. Be the first to share your thoughts!
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="space-y-1 pb-4 border-b last:border-0 last:pb-0">
+                      <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+                        <span className="font-medium text-sm">{comment.author_name}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                        </span>
+                      </div>
+                      <p className="text-sm text-card-foreground mt-1">{comment.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Fixed Comment Form at Bottom */}
+          <div className="fixed bottom-0 left-0 right-0 bg-card border-t p-4 shadow-lg">
+            <form onSubmit={handleSubmitComment}>
+              <div className="space-y-3">
+                <Input
+                  placeholder="Your name"
+                  value={newComment.name}
+                  onChange={(e) => setNewComment({ ...newComment, name: e.target.value })}
+                  required
+                  className="text-sm"
+                />
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Add a comment..."
+                    value={newComment.text}
+                    onChange={(e) => setNewComment({ ...newComment, text: e.target.value })}
+                    required
+                    className="text-sm flex-1"
+                  />
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    size="icon"
+                    className="flex-shrink-0"
+                  >
                     <Send className="w-4 h-4" />
                   </Button>
                 </div>
