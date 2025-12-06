@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --evergreen: 158 85% 22%;
+    --warm-gold: 43 58% 59%;
+    --berry-red: 0 77% 42%;
+    --ivory: 40 100% 97%;
+    --midnight-blue: 210 71% 8%;
+
+    --background: 40 100% 97%;
+    --foreground: 158 85% 22%;
+    --card: 0 0% 100%;
+    --card-foreground: 158 85% 22%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 158 85% 22%;
+    --primary: 158 85% 22%;
+    --primary-foreground: 40 100% 97%;
+    --secondary: 43 58% 59%;
+    --secondary-foreground: 210 71% 8%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 43 58% 59%;
+    --accent-foreground: 210 71% 8%;
+    --destructive: 0 77% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 158 85% 22%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 210 71% 8%;
+    --foreground: 40 100% 97%;
+    --card: 210 50% 12%;
+    --card-foreground: 40 100% 97%;
+    --popover: 210 50% 12%;
+    --popover-foreground: 40 100% 97%;
+    --primary: 158 85% 22%;
+    --primary-foreground: 40 100% 97%;
+    --secondary: 43 58% 59%;
+    --secondary-foreground: 210 71% 8%;
+    --muted: 210 30% 20%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 43 58% 59%;
+    --accent-foreground: 210 71% 8%;
+    --destructive: 0 77% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 30% 20%;
+    --input: 210 30% 20%;
+    --ring: 43 58% 59%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .snowfall {
+    position: fixed;
+    top: -100px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .snowflake {
+    position: absolute;
+    top: -10px;
+    color: rgba(255, 255, 255, 0.8);
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes pulse-heart {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  .like-animation {
+    animation: pulse-heart 0.3s ease-in-out;
+  }
+
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .confetti {
+    animation: confetti-fall 1s ease-out forwards;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(220, 174, 78, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+}
