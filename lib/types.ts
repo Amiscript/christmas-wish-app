@@ -49,3 +49,27 @@ export interface ModerationLog {
   reason?: string;
   created_at: string;
 }
+
+// types/speech-recognition.d.ts
+ export interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+ export interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onend: () => void;
+}
+
+ export interface Window {
+  SpeechRecognition: {
+    new (): SpeechRecognition;
+  };
+  webkitSpeechRecognition: {
+    new (): SpeechRecognition;
+  };
+}

@@ -60,8 +60,25 @@ export default function Home() {
               <Camera className="w-4 h-4 mr-2" />
               Share Your Christmas
             </Button>
+
+       
+            
           </div>
+          
         </div>
+<div className='justy-center'>
+   <Link href="/games">
+              <Button variant="ghost">Memory Match</Button>
+            </Link>
+
+            <Link href="/word-challenge">
+              <Button variant="ghost">Word Challenge</Button>
+            </Link>
+
+        
+</div>
+         
+          
       </nav>
 
       <section className="relative py-20 md:py-32 overflow-hidden">
