@@ -59,22 +59,16 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-4">
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-full hover:bg-primary/10 dark:hover:bg-primary/20"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5 text-amber-400" />
-              ) : (
-                <Moon className="h-5 w-5 text-primary" />
-              )}
-            </Button>
-
+     
             {/* Navigation Links */}
+
+               <Button
+              onClick={() => setUploadModalOpen(true)}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Camera className="w-4 h-4 mr-2" />
+              upload
+            </Button>
          
             <Link href="/gallery">
               <Button variant="ghost" className="gap-2">
@@ -101,13 +95,7 @@ export default function Home() {
             </div>
 
             {/* Upload Button */}
-            <Button
-              onClick={() => setUploadModalOpen(true)}
-              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              <Camera className="w-4 h-4 mr-2" />
-              upload
-            </Button>
+         
           </div>
         </div>
 
