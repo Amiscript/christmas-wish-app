@@ -230,11 +230,11 @@ const CHRISTMAS_WORDS = [
 
 // Game modes
 const GAME_MODES = [
-  { id: 'classic', name: 'Classic', description: 'Standard word challenge', icon: '🎄', timeMultiplier: 1 },
-  { id: 'time-attack', name: 'Time Attack', description: 'Race against the clock', icon: '⏱️', timeMultiplier: 0.7 },
-  { id: 'zen', name: 'Zen Mode', description: 'Relaxed, no time limit', icon: '🧘', timeMultiplier: 0 },
-  { id: 'hardcore', name: 'Hardcore', description: 'No hints, high stakes', icon: '💀', timeMultiplier: 1.3 },
-  { id: 'multiplayer', name: 'Multiplayer', description: 'Play with friends', icon: '👥', timeMultiplier: 1 },
+  { id: 'classic', name: 'Classic', description: 'Standard word challenge', icon: '', timeMultiplier: 1 },
+  { id: 'time-attack', name: 'Time Attack', description: 'Race against the clock', icon: '', timeMultiplier: 0.7 },
+  { id: 'zen', name: 'Star', description: 'Relaxed, no time limit', icon: '', timeMultiplier: 0 },
+  { id: 'hardcore', name: 'Santa', description: 'No hints, high stakes', icon: '', timeMultiplier: 1.3 },
+  { id: 'multiplayer', name: 'Multiplayer', description: 'Play with friends', icon: '', timeMultiplier: 1 },
 ];
 
 // Power-ups
