@@ -389,11 +389,7 @@ export default function MemoryMatchPage() {
             <span className="text-lg font-semibold text-gray-800">Christmas Memory Match</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/games">
-              <Button variant="ghost" size="sm">
-                Back to Games
-              </Button>
-            </Link>
+           
             <Link href="/">
               <Button variant="ghost" size="sm">
                 Home
