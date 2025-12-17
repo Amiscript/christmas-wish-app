@@ -106,7 +106,7 @@ export default function Home() {
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Camera className="w-4 h-4 mr-2" />
-              Share Your Christmas
+              upload
             </Button>
           </div>
         </div>
