@@ -402,30 +402,7 @@ export default function WordChallengePremiumPage() {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const gameStartTimeRef = useRef<number>(0);
   
-  // Audio system
-  const audioRefs = useRef<Record<string, HTMLAudioElement>>({
-    correct: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3'),
-    incorrect: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3'),
-    levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'),
-    click: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3'),
-    hover: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-hover-sfx-1122.mp3'),
-    powerup: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3'),
-    gameOver: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-game-over-tetris-2047.mp3'),
-    background: new Audio('/sounds/christmas-music.mp3'),
-  });
 
-  // Play sound helper
-  const playSound = useCallback((sound: string) => {
-    if (!soundEnabled || !audioRefs.current[sound]) return;
-    try {
-      audioRefs.current[sound].currentTime = 0;
-      audioRefs.current[sound].play().catch(() => {});
-    } catch (error) {
-      console.error('Error playing sound:', error);
-    }
-  }, [soundEnabled]);
-
-  // Initialize game
   useEffect(() => {
     // Load saved stats
     const savedStats = localStorage.getItem('christmas-word-stats');
@@ -437,22 +414,9 @@ export default function WordChallengePremiumPage() {
       }
     }
     
-    // Initialize audio
-    Object.values(audioRefs.current).forEach(audio => {
-      if (audio) {
-        audio.volume = 0.5;
-        audio.preload = 'auto';
-      }
-    });
-    
+
     return () => {
       // Cleanup
-      Object.values(audioRefs.current).forEach(audio => {
-        if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
-      });
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
@@ -626,8 +590,8 @@ export default function WordChallengePremiumPage() {
       }, 300);
     }
     
-    playSound('click');
-  }, [gameMode, difficulty, generateLevelWords, autoFocus, playSound, updateStats]);
+   
+  }, [gameMode, difficulty, generateLevelWords, autoFocus, updateStats]);
 
   // ============ GAME FUNCTIONS ============
 
@@ -768,7 +732,7 @@ export default function WordChallengePremiumPage() {
     
     // Show level complete screen
     setGameState('levelComplete');
-    playSound('levelUp');
+  
     
     // Grant power-ups for next level
     const newPowerUps = POWER_UPS
@@ -777,7 +741,7 @@ export default function WordChallengePremiumPage() {
       .map(p => p.id);
     
     setPowerUps(newPowerUps);
-  }, [currentWords, level, score, timeLeft, playSound]);
+  }, [currentWords, level, score, timeLeft]);
 
   const checkWord = useCallback(() => {
     const currentWord = currentWords[currentWordIndex];
@@ -831,8 +795,7 @@ export default function WordChallengePremiumPage() {
         message: `Excellent! +${wordScore} points • +${earnedCoins} coins` 
       });
       
-      playSound('correct');
-      
+    
       // Mark word as solved
       const solvedWords = [...currentWords];
       solvedWords[currentWordIndex].solved = true;
@@ -903,14 +866,14 @@ export default function WordChallengePremiumPage() {
       updatedWords[currentWordIndex] = currentWordCopy;
       setCurrentWords(updatedWords);
       
-      playSound('incorrect');
+     
       
       setTimeout(() => {
         setGameState('playing');
         setFeedback(null);
       }, 2000);
     }
-  }, [currentWords, currentWordIndex, streak, maxStreak, level, difficulty, activePowerUps, multiplier, gameMode, autoFocus, playSound, completeLevel]);
+  }, [currentWords, currentWordIndex, streak, maxStreak, level, difficulty, activePowerUps, multiplier, gameMode, autoFocus, completeLevel]);
 
   const continueToNextLevel = () => {
     // Check if this is the last level
@@ -983,8 +946,7 @@ export default function WordChallengePremiumPage() {
         }
       }, 300);
     }
-    
-    playSound('click');
+   
   };
 
   const restartGame = () => {
@@ -1022,8 +984,8 @@ export default function WordChallengePremiumPage() {
         break;
     }
     
-    playSound('powerup');
-  }, [coins, currentWords, currentWordIndex, playSound]);
+  
+  }, [coins, currentWords, currentWordIndex]);
 
   // Render level transition screen
   const renderLevelTransition = () => {
