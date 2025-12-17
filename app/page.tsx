@@ -333,7 +333,14 @@ export default function Home() {
               >
                 {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
               </button>
+              
             </div>
+             <Link href="/admin">
+              <Button variant="ghost" size="sm" className="gap-2">
+                {/* <ChristmasTree className="w-4 h-4" /> */}
+                @ 2026
+              </Button>
+            </Link>
           </div>
         </div>
       </footer>
